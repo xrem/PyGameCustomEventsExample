@@ -14,6 +14,13 @@ clock = pygame.time.Clock()
 blocks_add_timer = 1000
 pygame.time.set_timer(ADDBLOCK, blocks_add_timer)
 
+#polygon(surface, color, points, width=0)
+
+p1 = (300, 300)
+p2 = (200, 500)
+p3 = (400, 500)
+
+
 player = Player(blocks)
 all_sprite.add(player)
 
@@ -24,6 +31,19 @@ def draw_text(surf, text, x, y):
     text_rect = text_surface.get_rect()
     text_rect.midtop = (x, y)
     surf.blit(text_surface, text_rect)
+
+def draw_player_health(screen, player):
+    outline = pygame.Rect(WIDTH - 110, 60, 100, 20)
+    fill = pygame.Rect(WIDTH - 110, 60, player.hp, 20)
+    fill_color = GREEN
+    if player.hp <= 70:
+        fill_color = YELLOW
+    if player.hp <= 40:
+        fill_color = RED
+
+    if player.hp > 0:
+        pygame.draw.rect(screen, GREY, outline)
+        pygame.draw.rect(screen, fill_color, fill)
 
 while running:
     for event in pygame.event.get():
@@ -51,10 +71,14 @@ while running:
             all_sprite.add(block)
             blocks.add(block)
 
+    if player.hp <= 0:
+        pygame.time.set_timer(ADDBLOCK, 0)
+
     all_sprite.update()
     screen.fill(BLACK)
     draw_text(screen, "Speed: "+str((3000 - blocks_add_timer) / 100), WIDTH - 50, 30)
     all_sprite.draw(screen)
+    draw_player_health(screen, player)
     pygame.display.flip()
 
     clock.tick(FPS)

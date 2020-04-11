@@ -13,15 +13,20 @@ class Player(pygame.sprite.Sprite):
         self.player_group.add(self)
         self.state = STATE_IDLE
         self.speed = 5
+        self.hp = 100
 
     def set_state(self, state):
         self.state = state
 
     def update(self):
+        if (self.hp < 100 and self.hp > 0):
+            self.hp += 0.10
         self.rect.y += self.speed * self.state
         if self.rect.y <= 0:
             self.rect.y = 0
         if self.rect.y + self.rect.height >= HEIGHT:
             self.rect.y = HEIGHT - self.rect.height
-        if pygame.sprite.groupcollide(self.player_group, self.blocks, False, False):
-           self.kill()
+        if pygame.sprite.groupcollide(self.player_group, self.blocks, False, True):
+           self.hp -= 40
+           if (self.hp <= 0):
+               self.kill()
