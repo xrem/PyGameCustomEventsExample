@@ -19,5 +19,9 @@ BLOCK_IMG_PATH = path.join(path.dirname(__file__), "block.png")
 ADDBLOCK = pygame.USEREVENT + 1
 
 STATE_IDLE = 0
+
 STATE_UP = -1
 STATE_DOWN = 1
+
+STATE_LEFT = -1
+STATE_RIGHT = 1

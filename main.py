@@ -51,21 +51,30 @@ while running:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                player.set_state(STATE_UP)
+                player.set_state_verical(STATE_UP)
             if event.key == pygame.K_DOWN:
-                player.set_state(STATE_DOWN)
+                player.set_state_verical(STATE_DOWN)
             if event.key == pygame.K_LEFT:
+                player.set_state_horizontal(STATE_LEFT)
+            if event.key == pygame.K_RIGHT:
+                player.set_state_horizontal(STATE_RIGHT)
+            if event.key == pygame.K_KP_PLUS:
                 blocks_add_timer -= 100
                 if (blocks_add_timer <= 100):
                     blocks_add_timer = 100
                 pygame.time.set_timer(ADDBLOCK, blocks_add_timer)
-            if event.key == pygame.K_RIGHT:
+            if event.key == pygame.K_KP_MINUS:
                 if (blocks_add_timer >= 3000):
                     blocks_add_timer = 3000
                 blocks_add_timer += 100
                 pygame.time.set_timer(ADDBLOCK, blocks_add_timer)
         if event.type == pygame.KEYUP:
-            player.set_state(STATE_IDLE)
+            if (event.key == pygame.K_UP and player.state_verical == STATE_UP) or\
+                    (event.key == pygame.K_DOWN and player.state_verical == STATE_DOWN):
+                player.set_state_verical(STATE_IDLE)
+            if (event.key == pygame.K_LEFT and player.state_horizontal == STATE_LEFT) \
+                    or (event.key == pygame.K_RIGHT and player.state_horizontal == STATE_RIGHT):
+                player.set_state_horizontal(STATE_IDLE)
         if event.type == ADDBLOCK:
             block = Block(player.rect.centery)
             all_sprite.add(block)
